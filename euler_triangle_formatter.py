@@ -11,6 +11,8 @@ Requires the following:
 
 Final formatting should look like a 2D C array with 0s inserted 
 for blanks in the triangle.
+
+This should take any triangle in a text file and convert it to something that can be read into a 2d array in C.
 '''
 
 if len(sys.argv) != 3:
