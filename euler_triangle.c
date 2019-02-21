@@ -20,15 +20,14 @@ int getLines(FILE *fn, char filename[])
 	return lines;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	start = clock();
-	const int size = getLines(f, "euler018_formatted.txt");
+	const int size = getLines(f, argv[1]);
 	
-	f = fopen("euler018_formatted.txt", "r");
+	f = fopen(argv[1], "r");
 	int col, row;
 	
-	//Iterate through triangle.
 	int triangle[size][size];
 	for(col=0; col<size; col++){
 		for(row=0; row<size; row++){
@@ -39,36 +38,42 @@ int main()
 	printf("Checking triangle: ");
 	printf("\n");
 	
+	int linelength;
+	
 	for(col=0;col<size;col++){
+		linelength = 0;
 		for(row=0;row<size;row++){
-			if(triangle[col][row] != 0) printf("%d ", triangle[col][row]);
+			/*if(triangle[col][row] != 0) */printf("%d ", triangle[col][row]);
+			linelength++;
 		}
-		printf("\n");
+		printf("EndLine: %d\n", linelength);
 	}
+	
+	printf("Last item on triangle: %d\n", triangle[size][size]);
 
 	fclose(f);
+	
 		
-	int i, j;
-	for(i=size-2; i>-1; i--) {
-		for(j=0; j<size; j++) {
-			if((triangle[i][j] > 0 && triangle[i+1][j] > 0) || (triangle[i+1][j+1] > 0 && triangle[i][j] > 0)) {
-				if(triangle[i][j] + triangle[i+1][j] > triangle[i][j] + triangle[i+1][j+1]) {
-					triangle[i][j] = triangle[i][j] + triangle[i+1][j];
+	for(col=size-2; col>-1; col--) {
+		for(row=0; row<size; row++) {
+			if((triangle[col][row] > 0 && triangle[col+1][row] > 0) || (triangle[col+1][row+1] > 0 && triangle[col][row] > 0)) {
+				if(triangle[col][row] + triangle[col+1][row] > triangle[col][row] + triangle[col+1][row+1]) {
+					triangle[col][row] = triangle[col][row] + triangle[col+1][row];
 				} else {
-					triangle[i][j] = triangle[i][j] + triangle[i+1][j+1];
+					triangle[col][row] = triangle[col][row] + triangle[col+1][row+1];
 				}
 			}
 		}
 	}
 	
+	printf("\n");
 	
-	
-	printf("Euler 18 answer: %d\n", triangle[0][0]);
+	printf("Answer: %d\n", triangle[0][0]);
 	printf("Size of triangle: %d\n", size);
 	
 	end = clock();
 	time_elapsed = ((double)(end-start))/CLOCKS_PER_SEC;
 	printf("Program time: %f secs\n", time_elapsed);
-
+	
 	return 0;
 }
